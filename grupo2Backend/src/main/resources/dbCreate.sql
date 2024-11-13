@@ -89,7 +89,7 @@ SELECT NEW.id_detalle INTO id_valor;
 END IF;
 END IF;
 
-INSERT INTO auditoria (id_usuario, nombre_tabla, operacion, fecha)
+INSERT INTO auditoria (id_objeto, nombre_tabla, operacion, fecha)
 VALUES (id_valor, TG_TABLE_NAME, TG_OP, current_timestamp);
 
 RETURN NULL;
