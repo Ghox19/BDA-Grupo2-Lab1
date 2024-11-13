@@ -98,13 +98,14 @@
     background-color: #721B65;
     color: white;
     border-radius: 0.5rem;
-    border: none;
+    border: solid 2px #721B65;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     justify-content: center;
     align-items: center;
     display: flex;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .div-button-login button:hover {
