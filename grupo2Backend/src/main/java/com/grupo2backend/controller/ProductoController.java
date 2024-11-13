@@ -1,7 +1,6 @@
 package com.grupo2backend.controller;
 
 import com.grupo2backend.entity.ProductoEntity;
-import com.grupo2backend.repository.ProductoRepository;
 import com.grupo2backend.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

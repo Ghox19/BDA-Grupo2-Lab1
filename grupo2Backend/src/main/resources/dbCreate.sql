@@ -52,11 +52,8 @@ CREATE TABLE IF NOT EXISTS auditoria(
     );
 
 -- DESCOMENTAR SI ES QUE SE QUIERE PROBAR MANUALMENTE
-
-
-/*
 CREATE OR REPLACE FUNCTION auditar_operacion()
-    RETURNS TRIGGER AS $$
+    RETURNS TRIGGER AS $BODY$
 DECLARE
 id_valor INTEGER;
 BEGIN
@@ -95,9 +92,10 @@ END IF;
 INSERT INTO auditoria (id_usuario, nombre_tabla, operacion, fecha)
 VALUES (id_valor, TG_TABLE_NAME, TG_OP, current_timestamp);
 
-RETURN null; -- VER SI SE NECESITA RETORNAR ALGO O NO
+RETURN NULL;
 END;
-$$ LANGUAGE plpgsql;
+$BODY$ LANGUAGE plpgsql;
+/
 
 CREATE OR REPLACE TRIGGER trigger_auditoria_categoria
     AFTER INSERT OR UPDATE OR DELETE ON categoria
@@ -122,4 +120,4 @@ CREATE OR REPLACE TRIGGER trigger_auditoria_orden
 CREATE OR REPLACE TRIGGER trigger_auditoria_detalle_orden
     AFTER INSERT OR UPDATE OR DELETE ON detalle_orden
     FOR EACH ROW
-    EXECUTE FUNCTION auditar_operacion();*/
+    EXECUTE FUNCTION auditar_operacion();
