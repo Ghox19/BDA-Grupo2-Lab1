@@ -1,6 +1,10 @@
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { createClient } from "../../Services/UserService";
+
+  const router = useRouter();
   const name = ref('')
   const email = ref('')
   const password = ref('')
@@ -24,25 +28,21 @@ import { ref } from 'vue'
         return
       }
       const data = {
-        name: name.value,
+        nombre: name.value,
         email: email.value,
-        password: password.value,
+        clave: password.value,
         telefono: telefono.value,
         direccion: direccion.value,
       }
       console.log(data)
-      /*
-      const response = await fetch('http://localhost:3000/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      const res = await response.json()
-      console.log(res)
-      */
+      const response = await createClient(data);
+      if(response.status === 201){
+        alert('Usuario creado correctamente')
+        router.push({ name: 'login' });
+      } else {
+        alert('Error al crear el usuario')
+        console.log(response)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -64,7 +64,7 @@ import { ref } from 'vue'
             <input type="email" v-model="email" class="form-control" id="email" placeholder="Ej: ejemplo@dominio.com">
           </div>
         </div>
-
+        
         <div class="fila">
           <div class="form-group">
             <label class="label" for="direccion">Dirección</label>
@@ -84,15 +84,12 @@ import { ref } from 'vue'
             <label class="label" for="password">Repita La Contraseña</label>
             <input type="password" v-model="password2" class="form-control" id="password2" placeholder="Password">
           </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Registrarse</button>
+        </div class="div-btn-register">
+            <button type="submit" class="btn-btn-primary">Registrarse</button>
       </form>
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 .fondo{
@@ -101,10 +98,12 @@ import { ref } from 'vue'
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/src/assets/FondoBda.jpg');
+  background-image: url('/src/assets/0bdf1db1939da634b85d6dccf27c35fd.jpg');
   background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .conteiner{
   margin: 0 auto;
   width: 600px;
@@ -112,24 +111,20 @@ import { ref } from 'vue'
   background: white;
   box-sizing: border-box;
   display: flex;
-  margin-top: 60px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
 }
-
 .title{
   text-align: center;
-  color: #721B25;
+  color: #721B65;
   margin-bottom: 20px;
 }
-
 .form-group{
   position: relative;
   margin-bottom: 25px;
 }
-
 .form-control{
   width: 100%;
   height: 35px;
@@ -141,16 +136,29 @@ import { ref } from 'vue'
 .label{
   display: block;
   font-size: 15px;
-  color: #721B25;
+  color: #721B65;
   font-weight: bold;
   margin-bottom: 5px;
 }
-
 .fila{
   display: flex;
   gap: 30px;
   margin-left: 10px;
   margin-right: 10px;
-
+}
+.btn-btn-primary{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 2rem;
+  margin: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: white;
+  color: rgb(45, 44, 44);
+  border-radius: 0.5rem;
+  border: solid 1px #721B65;
 }
 </style>

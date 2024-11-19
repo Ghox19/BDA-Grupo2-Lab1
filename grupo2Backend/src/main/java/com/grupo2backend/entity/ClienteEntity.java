@@ -6,6 +6,15 @@ public class ClienteEntity {
     private String direccion;
     private String email;
     private String telefono;
+    private String clave;
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
 
     public Long getId_cliente() {
         return id_cliente;
