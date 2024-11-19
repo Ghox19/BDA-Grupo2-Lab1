@@ -2,13 +2,13 @@
     <div class="fondo-login">
         <div class="contenedor-login">
                 <div class="div-login-form">
-                    <form action="">
+                    <form @submit.prevent="login">
                         <h1>Inicia sesión</h1>
                         <div class="div-inputs-login">
                             <label>Email</label>
-                            <input type="email" placeholder="Ej: email@gmail.com" required>
+                            <input type="email" v-model="data.email" placeholder="Ej: email@gmail.com" required>
                             <label>Password</label>
-                            <input type="password" placeholder="Contraseña" required>
+                            <input type="password" v-model="data.clave" placeholder="Contraseña" required>
                             <p>¿No estas registrado? <router-link to="/register">Registrate</Router-link></p>
                         </div>
                         <div class="div-button-login">
@@ -21,7 +21,30 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { Login } from '../../Services/UserService';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
+const store = useStore();
+const router = useRouter();
+const data = ref({ email: '', clave: '' });
+
+const login = async () => {
+
+    console.log('Data:', data.value);
+    const response = await Login(data.value);
+    console.log('Response:', response);
+    if (response.status === 200) {
+        alert('Sesión iniciada correctamente');
+        store.commit('setUser', response.data);
+        store.commit('login')
+        router.push({ name: 'home' });
+
+    } else {
+        alert('Error al iniciar sesión');
+    }
+};
 </script>
 
 <style scoped>

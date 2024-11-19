@@ -1,11 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { createClient } from "../../Services/UserService";
+
+  const router = useRouter();
   const name = ref('')
   const email = ref('')
   const password = ref('')
   const telefono = ref('')
   const direccion = ref('')
   const password2 = ref('')
+
   const register = async () => {
     try {
       console.log('register')
@@ -22,24 +27,21 @@ import { ref } from 'vue'
         return
       }
       const data = {
-        name: name.value,
+        nombre: name.value,
         email: email.value,
-        password: password.value,
+        clave: password.value,
         telefono: telefono.value,
         direccion: direccion.value,
       }
       console.log(data)
-      /*
-      const response = await fetch('http://localhost:3000/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      const res = await response.json()
-      console.log(res)
-      */
+      const response = await createClient(data);
+      if(response.status === 201){
+        alert('Usuario creado correctamente')
+        router.push({ name: 'login' });
+      } else {
+        alert('Error al crear el usuario')
+        console.log(response)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -143,18 +145,18 @@ import { ref } from 'vue'
   margin-right: 10px;
 }
 .btn-btn-primary{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    height: 2rem;
-    margin: 1rem;
-    padding: 1rem;
-    font-size: 1rem;
-    background-color: white;
-    color: rgb(45, 44, 44);
-    border-radius: 0.5rem;
-    border: solid 1px #721B65;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 2rem;
+  margin: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: white;
+  color: rgb(45, 44, 44);
+  border-radius: 0.5rem;
+  border: solid 1px #721B65;
 }
 </style>

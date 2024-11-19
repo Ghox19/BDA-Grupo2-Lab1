@@ -4,23 +4,23 @@ import Register from './components/client/register.vue';
 import Login from './components/client/login.vue';
 
 const routes = [
-    {
-        path: '/', redirect: '/home'
-    },
+  {
+    path: '/', redirect: '/home'
+  },
   {
     path: '/home',
     name: 'home',
-    component: Home,
+    component: Home
   },
   {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: Login
   },
   {
     path: '/register',
     name: 'register',
-    component: Register,
+    component: Register
   }
 ];
 

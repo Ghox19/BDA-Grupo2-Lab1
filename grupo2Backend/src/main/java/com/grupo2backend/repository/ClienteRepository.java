@@ -23,13 +23,14 @@ public class ClienteRepository {
     }
 
     public void save(ClienteEntity entity) {
-        String sql = "INSERT INTO cliente (nombre, direccion, email, telefono) VALUES (:nombre, :direccion, :email, :telefono)";
+        String sql = "INSERT INTO cliente (nombre, direccion, email, telefono, clave) VALUES (:nombre, :direccion, :email, :telefono, :clave)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("nombre", entity.getNombre())
                     .addParameter("direccion", entity.getDireccion())
                     .addParameter("email", entity.getEmail())
                     .addParameter("telefono", entity.getTelefono())
+                    .addParameter("clave", entity.getClave())
                     .executeUpdate();
         }
     }
@@ -39,6 +40,15 @@ public class ClienteRepository {
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
                     .addParameter("id", id)
+                    .executeAndFetchFirst(ClienteEntity.class);
+        }
+    }
+
+    public ClienteEntity findByEmail(String Email){
+        String sql = "SELECT id_cliente, nombre, direccion, email, telefono, clave FROM cliente WHERE email = :Email";
+        try(Connection con = sql2o.open()){
+            return con.createQuery(sql)
+                    .addParameter("Email", Email)
                     .executeAndFetchFirst(ClienteEntity.class);
         }
     }

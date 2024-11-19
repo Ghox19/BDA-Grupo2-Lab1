@@ -9,6 +9,7 @@ const loading = ref(false);
 const errorMessage = ref('');
 
 // Función para obtener los productos
+/*
 const getProductos = async () => {
   loading.value = true;
   try {
@@ -25,6 +26,7 @@ const getProductos = async () => {
 onMounted(() => {
   getProductos();
 });
+*/
 </script>
 
 <template>
