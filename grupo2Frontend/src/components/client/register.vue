@@ -1,3 +1,4 @@
+
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -63,6 +64,7 @@ import { createClient } from "../../Services/UserService";
             <input type="email" v-model="email" class="form-control" id="email" placeholder="Ej: ejemplo@dominio.com">
           </div>
         </div>
+        
         <div class="fila">
           <div class="form-group">
             <label class="label" for="direccion">Dirección</label>
