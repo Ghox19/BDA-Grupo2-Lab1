@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrdenService {
@@ -29,6 +30,10 @@ public class OrdenService {
 
     public List<OrdenEntity> getAllOrdenes() {
         return ordenRepository.findAll();
+    }
+
+    public Optional<Long> getOrdenProcesoByIdCliente(Long idCliente){
+              return ordenRepository.findByEstadoAndIdCliente(idCliente);
     }
 
     public OrdenEntity getOrdenById(long id) {

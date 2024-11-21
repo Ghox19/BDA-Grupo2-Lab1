@@ -17,6 +17,13 @@ import java.util.ArrayList;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/Auth") || path.startsWith("/public")){
+            chain.doFilter(request,response);
+            return;
+        }
+
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {

@@ -1,14 +1,35 @@
-<script>
+<script setup>
+import { ref, onMounted } from "vue";
+import { verifyToken } from "../../../Services/authentication";
+import NavPublic from './ViewNavbar/NavPublic.vue';
+import NavClient from './ViewNavbar/NavClient.vue';
 
+const tokenValid = ref(false); // Variable reactiva para controlar si el token es válido
+
+// Función para verificar el token
+const verify= async () => {
+  try {
+    const response = await verifyToken();
+    tokenValid.value = response;
+  } catch (error) {
+    tokenValid.value = false; 
+  }
+};
+
+// Verificar token cuando el componente se monta
+onMounted(() => {
+  verify();
+});
 </script>
 
 <template>
     <div class="navbar-container">
         <div class="content">
             <h1>Ecommerce</h1>
-            <router-link to="/login">
-                <button class="btn-login">Ir al Login</button>
-            </router-link>
+            <div class="sub-content">
+                <NavPublic v-if="!tokenValid"/>
+                <NavClient v-else/>
+            </div>
         </div>
     </div>
 </template>
@@ -18,9 +39,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10vh;
+    height: 9vh;
     width: 100%;
-    background-color: #721B65;
+    background-color: #4944b8;
     color: white;
     font-family: "Open Sans", sans-serif;
 }
@@ -33,25 +54,11 @@
     margin: 0 2rem;
 }
 
-
-.btn-login {
-    padding: 1rem;
-    background: linear-gradient(to left, white 50%, #721B65 50%);
-    background-size: 200% 100%;
-    background-position: right bottom;
-    color: #721B65;
-    border-radius: 0.5rem;
-    border: 1px solid white;
-    cursor: pointer;
-    font-weight: bold;
-    justify-content: center;
-    align-items: center;
+.sub-content {
     display: flex;
-    transition: background-position 0.4s ease, color 0.4s ease;
-}
-
-.btn-login:hover {
-    background-position: left bottom;
-    color: white;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 13%;
 }
 </style>

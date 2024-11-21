@@ -23,6 +23,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Login } from '../../Services/UserService';
+import { getOrderIdCliente, CreateOrder } from '../../Services/OrdenService';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -32,15 +33,33 @@ const data = ref({ email: '', clave: '' });
 
 const login = async () => {
 
-    console.log('Data:', data.value);
     const response = await Login(data.value);
     console.log('Response:', response);
     if (response.status === 200) {
-        alert('Sesión iniciada correctamente');
         store.commit('setUser', response.data);
-        store.commit('login')
-        router.push({ name: 'home' });
+        store.commit('login');
 
+        const idCliente = response.data.id_user;
+
+        const responseOrden = await getOrderIdCliente(idCliente);
+        let orderId = responseOrden || null;
+
+        if(!orderId){
+            const data = {
+                fecha_orden: new Date(),
+                id_cliente: idCliente,
+                estado: "en_proceso",
+                total: 0
+            }
+
+            const newOrden = await CreateOrder(data);
+            orderId = newOrden;
+        }
+        
+        store.commit('setOrder', orderId);
+
+        alert('Sesión iniciada correctamente');
+        router.push({ name: 'allproducts' });
     } else {
         alert('Error al iniciar sesión');
     }

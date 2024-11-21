@@ -16,20 +16,9 @@ public class ProductoController {
     @Autowired
     private ProductoService service;
 
-    @GetMapping
-    public List<ProductoEntity> getAll() {
-        return service.getAllProductos();
-    }
-
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody ProductoEntity entity) {
         return service.addProducto(entity);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductoEntity> getById(@PathVariable Long id) {
-        ProductoEntity entity = service.getProductoById(id);
-        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

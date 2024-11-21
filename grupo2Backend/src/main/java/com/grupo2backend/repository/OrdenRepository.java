@@ -7,6 +7,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrdenRepository {
@@ -30,6 +31,17 @@ public class OrdenRepository {
                     .addParameter("id_cliente", entity.getId_cliente())
                     .addParameter("total", entity.getTotal())
                     .executeUpdate();
+        }
+    }
+
+    public Optional<Long> findByEstadoAndIdCliente(Long idCliente){
+        String sql = "SELECT id_orden FROM orden WHERE id_cliente = :idCliente AND estado = :estado";
+        try(Connection con = sql2o.open()){
+            Long idOrden = con.createQuery(sql)
+                    .addParameter("idCliente", idCliente)
+                    .addParameter("estado", "en_proceso")
+                    .executeAndFetchFirst(Long.class);
+            return Optional.ofNullable(idOrden);
         }
     }
 
