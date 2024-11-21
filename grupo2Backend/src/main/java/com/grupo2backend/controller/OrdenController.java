@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -34,5 +35,15 @@ public class OrdenController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         return service.deleteOrden(id);
+    }
+
+    @GetMapping("/calcularTotalOrden/{id}")
+    public ResponseEntity<Long> getTotalOrden(@PathVariable Long id){
+        Long total = service.getTotalOrden(id);
+        if (total != null) {
+            return ResponseEntity.ok(total);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

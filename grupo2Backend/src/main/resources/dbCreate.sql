@@ -1,5 +1,6 @@
 -- IDEALMENTE EJECUTAR LO SIGUIENTE POR MEDIO DE PGADMIN, O EJECUTAR SOLAMENTE LO RELACIONADO AL PROCEDIMIENTO EN ADELANTE, USANDO SPRING BOOT SE CAE POR LAS $$
 
+/*
 CREATE TABLE IF NOT EXISTS categoria (
                                          id_categoria SERIAL PRIMARY KEY,
                                          nombre VARCHAR(100) NOT NULL
@@ -96,29 +97,46 @@ VALUES (id_valor, TG_TABLE_NAME, TG_OP, current_timestamp);
 RETURN NULL;
 END;
 $BODY$ LANGUAGE plpgsql;
-/
 
-CREATE OR REPLACE TRIGGER trigger_auditoria_categoria
+CREATE OR REPLACE FUNCTION calcular_total_orden(p_id_orden BIGINT)
+       RETURNS DECIMAL(10,2) AS $BODY$
+DECLARE
+    v_total DECIMAL(10,2);
+BEGIN
+    SELECT SUM(d.cantidad * d.precio_unitario)
+    INTO v_total
+    FROM detalle_orden d
+    WHERE d.id_orden = p_id_orden;
+
+    UPDATE orden
+    SET total = v_total
+    where id_orden = p_id_orden;
+
+    RETURN v_total;
+END;
+$BODY$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_auditoria_categoria
     AFTER INSERT OR UPDATE OR DELETE ON categoria
     FOR EACH ROW -- ver mas documentación
     EXECUTE FUNCTION auditar_operacion();
 
-CREATE OR REPLACE TRIGGER trigger_auditoria_producto
+CREATE TRIGGER trigger_auditoria_producto
     AFTER INSERT OR UPDATE OR DELETE ON producto
     FOR EACH ROW
     EXECUTE FUNCTION auditar_operacion();
 
-CREATE OR REPLACE TRIGGER trigger_auditoria_cliente
+CREATE TRIGGER trigger_auditoria_cliente
     AFTER INSERT OR UPDATE OR DELETE ON cliente
     FOR EACH ROW
     EXECUTE FUNCTION auditar_operacion();
 
-CREATE OR REPLACE TRIGGER trigger_auditoria_orden
+CREATE TRIGGER trigger_auditoria_orden
     AFTER INSERT OR UPDATE OR DELETE ON orden
     FOR EACH ROW
     EXECUTE FUNCTION auditar_operacion();
 
-CREATE OR REPLACE TRIGGER trigger_auditoria_detalle_orden
+CREATE TRIGGER trigger_auditoria_detalle_orden
     AFTER INSERT OR UPDATE OR DELETE ON detalle_orden
     FOR EACH ROW
-    EXECUTE FUNCTION auditar_operacion();
+    EXECUTE FUNCTION auditar_operacion(); */

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -48,6 +49,15 @@ public class OrdenRepository {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
+        }
+    }
+
+    public Long getTotalOrden(Long idOrden){
+        String sql = "SELECT calcular_total_orden(:idOrden)";
+        try(Connection con = sql2o.open()){
+            return con.createQuery(sql).
+                    addParameter("idOrden", idOrden).
+                    executeAndFetchFirst(Long.class);
         }
     }
 }
