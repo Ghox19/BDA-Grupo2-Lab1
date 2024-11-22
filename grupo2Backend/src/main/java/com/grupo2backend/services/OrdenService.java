@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +48,17 @@ public class OrdenService {
             return new ResponseEntity<>("Se elimino correctamente la Categoria", HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public BigDecimal getTotalOrden(Long id){
+        OrdenEntity orden = ordenRepository.findById(id);
+        BigDecimal total = ordenRepository.getTotalOrden(id);
+
+        if(orden != null) {
+            orden.setTotal(total);
+            return total;
+        } else {
+            return null;
+        }
     }
 }
