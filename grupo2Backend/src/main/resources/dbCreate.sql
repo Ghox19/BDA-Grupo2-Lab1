@@ -98,6 +98,25 @@ END;
 $BODY$ LANGUAGE plpgsql;
 /
 
+CREATE OR REPLACE FUNCTION calcular_total_orden(p_id_orden BIGINT)
+       RETURNS DECIMAL(10,2) AS $BODY$
+DECLARE
+    v_total DECIMAL(10,2);
+BEGIN
+    SELECT SUM(d.cantidad * d.precio_unitario)
+    INTO v_total
+    FROM detalle_orden d
+    WHERE d.id_orden = p_id_orden;
+
+    UPDATE orden
+    SET total = v_total
+    where id_orden = p_id_orden;
+
+    RETURN v_total;
+END;
+$BODY$ LANGUAGE plpgsql;
+/
+
 DROP TRIGGER IF EXISTS trigger_auditoria_categoria ON categoria;
 CREATE TRIGGER trigger_auditoria_categoria
     AFTER INSERT OR UPDATE OR DELETE ON categoria

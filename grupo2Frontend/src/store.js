@@ -18,6 +18,12 @@ export default createStore({
     clearUser(state) {
       state.user = null;
     },
+    setOrder(state, order) {
+      state.order = order;
+    },
+    clearOrder(state) {
+      state.order = null;
+    },
     login(state) {
       state.login = true;
     },
@@ -38,10 +44,17 @@ export default createStore({
     logout({ commit }) {
       commit("logout");
     },
+    setOrder({ commit }, order) {
+      commit("setOrder", order);
+    },
+    clearOrder({ commit }) {
+      commit("clearOrder");
+    }
   },
   getters: {
     getUser: (state) => state.user,
     getLogin: (state) => state.login,
+    getOrder: (state) => state.order
   },
   plugins: [vuexPersist.plugin],
 });
