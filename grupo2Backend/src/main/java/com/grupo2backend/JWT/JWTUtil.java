@@ -16,7 +16,7 @@ public class JWTUtil {
         return JWT.create()
                 .withSubject(name)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 30)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 60)))
                 .sign(algorithm);
     }
 

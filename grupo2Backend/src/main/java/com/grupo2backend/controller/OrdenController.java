@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/orden")
@@ -29,6 +30,11 @@ public class OrdenController {
     public ResponseEntity<OrdenEntity> getById(@PathVariable Long id) {
         OrdenEntity entity = service.getOrdenById(id);
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/ordencliente/{id_cliente}")
+    public Optional<Long> getOrdenById(@PathVariable Long id_cliente){
+        return service.getOrdenProcesoByIdCliente(id_cliente);
     }
 
     @DeleteMapping("/{id}")
