@@ -5,7 +5,6 @@ import { getProductById} from '../../../Services/ProductService';
 import { getDetalleOrden } from "../../../Services/DetalleOrden"
 import { createDetalleOrden } from "../../../Services/DetalleOrden"
 import { updateDetalleOrden } from "../../../Services/DetalleOrden"
-import NavbarClient from '../component client/Navbar.vue';
 import {useStore} from "vuex";
 
 const router = useRouter();
@@ -16,47 +15,49 @@ const descripcion = ref('')
 const estado = ref('')
 const cantidad = ref(1)
 const store = useStore();
-const orden = computed(() => store.getters.getOrden);
+const orden = store.state.order;
 const idProducto = router.currentRoute.value.params.id;
 
 
 
 onMounted(async () => {
-    const response = await getProductById(idProducto);
-    console.log(response);
-    nombre.value = response.data.nombre;
-    precio.value = response.data.precio;
-    stock.value = response.data.stock;
-    descripcion.value = response.data.descripcion;
-    estado.value = response.data.estado;
+  const response = await getProductById(idProducto);
+  nombre.value = response.data.nombre;
+  precio.value = response.data.precio;
+  stock.value = response.data.stock;
+  descripcion.value = response.data.descripcion;
+  estado.value = response.data.estado;
 });
 
 const carrito = async () => {
   console.log("Cantidad",cantidad.value);
-  const response = await getDetalleOrden(orden.value.id_orden, idProducto);
+  const response = await getDetalleOrden(orden, idProducto);
+
+  //verificacion de token y redireccionamiento a login
+
   if (response.data != null) {
     const aux = response.data.cantidad + cantidad.value;
     const data1 = {
       id_detalle: response.data.id_detalle,
-      id_orden: response.data.id_orden,
-      id_producto: 6,
+      id_orden: orden,
+      id_producto: idProducto,
       cantidad: aux,
       precio_unitario: response.data.precio_unitario
     }
     const response = await updateDetalleOrden(data1);
     alert("Producto agregado al carrito");
-    router.push({ name: 'home' });
+    router.push({  name: 'allproducts' });
 
   } else {
     const data2 = {
-      id_orden: orden.value.id_orden,
-      id_producto: 6,
+      id_orden: orden,
+      id_producto: idProducto,
       cantidad: cantidad.value,
       precio_unitario: precio.value
     }
     const response = await createDetalleOrden(data2);
     alert("Se aumento la cantidad de productos en el carrito");
-    router.push({ name: 'home' });
+    router.push({ name: 'allproducts'});
   }
 }
 
@@ -64,7 +65,6 @@ const carrito = async () => {
 
 <template>
   <div class="fondo">
-    <NavbarClient />
     <div class="formato">
       <div class="contenedor1">
         <h2 class="titulo1">{{nombre}}</h2>
@@ -89,6 +89,7 @@ const carrito = async () => {
 <style scoped>
 .fondo {
   height: 100%;
+  width: 100%;
   background-color: white;
   overflow: hidden;
 }
@@ -123,9 +124,6 @@ const carrito = async () => {
   text-align: justify;
   margin-left: 50px;
   margin-right: 50px;
-}
-
-.caracteristicas {
 }
 
 .titulo1{

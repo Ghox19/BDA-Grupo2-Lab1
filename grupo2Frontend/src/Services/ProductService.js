@@ -12,7 +12,7 @@ export const getProducts = async () => {
 
 export const getProductById = async (productId) => {
     try {
-        const response = await httpClient.get(`/producto/${productId}`);
+        const response = await httpClient.get(`/public/prod/${productId}`);
         return { data: response.data, status: response.status };
     } catch (error) {
         if (error.response) {

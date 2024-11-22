@@ -1,8 +1,8 @@
 <template>
-    <div v-if="loading">Cargando productos...</div>
-      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-      <div class="product-list">
-        <div v-if="nullmessage">
+    <div v-if="loading" class="content-message">Cargando productos...</div>
+      <div v-if="errorMessage" class="content-message">{{ errorMessage }}</div>
+      <div v-if="!loading && !errorMessage" class="product-list">
+        <div v-if="nullmessage" class="content-message">
           No hay productos disponibles en este momento.
         </div>
         <div v-for="product in productos" :key="product.id_producto" class="product-card" @click="ViewProduct(product.id_producto)">
@@ -16,12 +16,14 @@
 <script setup>
   import { ref, onMounted } from 'vue'; // Importar funciones reactivas y ciclo de vida
   import { getProducts } from '../../../Services/ProductService';
+  import { useRouter } from 'vue-router';
 
 // Variables reactivas
 const productos = ref([]);
 const loading = ref(false);
 const nullmessage = ref(false);
 const errorMessage = ref('');
+const router = useRouter();
 
 // Función para obtener los productos
 
@@ -41,7 +43,7 @@ const getAllProducts = async () => {
 };
 
 const ViewProduct = (id) => {
-  console.log('Ver producto:', id);
+  router.push({ name: 'product', params: { id } });
 };
 
 // Llamar a la función cuando el componente se monte
@@ -57,9 +59,16 @@ onMounted(() => {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  gap: 16px;
   height: 100%;
   overflow-y: auto;
+}
+
+.content-message{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .product-card {
@@ -67,7 +76,8 @@ onMounted(() => {
   height: 300px;
   margin: 16px;
   padding: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid #4944b8;
+  background-color: white;
   border-radius: 8px;
   box-sizing: border-box;
   cursor: pointer;

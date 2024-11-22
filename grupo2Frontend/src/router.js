@@ -18,7 +18,13 @@ const routes = [
         path: 'allproducts',
         name: 'allproducts',
         component: allProducts
-      }]
+      },
+      {
+        path: 'product/:id',
+        name: 'product',
+        component: Product
+      }
+    ]
     },
   {
     path: '/login',
@@ -29,11 +35,6 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
-  },
-  {
-    path: '/product/:id',
-    name: 'product',
-    component: Product
   }
 ];
 
