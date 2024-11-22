@@ -35,7 +35,7 @@ public class OrdenController {
     }
 
     @GetMapping("/ordencliente/{id_cliente}")
-    public Optional<Long> getOrdenById(@PathVariable Long id_cliente){
+    public Optional<Integer> getOrdenById(@PathVariable Long id_cliente){
         return service.getOrdenProcesoByIdCliente(id_cliente);
     }
 

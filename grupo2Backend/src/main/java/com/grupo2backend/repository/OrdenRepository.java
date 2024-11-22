@@ -36,13 +36,13 @@ public class OrdenRepository {
         }
     }
 
-    public Optional<Long> findByEstadoAndIdCliente(Long idCliente){
+    public Optional<Integer> findByEstadoAndIdCliente(Long idCliente){
         String sql = "SELECT id_orden FROM orden WHERE id_cliente = :idCliente AND estado = :estado";
         try(Connection con = sql2o.open()){
-            Long idOrden = con.createQuery(sql)
+            Integer idOrden = con.createQuery(sql)
                     .addParameter("idCliente", idCliente)
                     .addParameter("estado", "en_proceso")
-                    .executeAndFetchFirst(Long.class);
+                    .executeScalar(Integer.class);
             return Optional.ofNullable(idOrden);
         }
     }
