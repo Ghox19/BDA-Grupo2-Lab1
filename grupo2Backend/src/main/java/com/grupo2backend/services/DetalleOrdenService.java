@@ -35,6 +35,10 @@ public class DetalleOrdenService {
         return detalleOrdenRepository.findById(id);
     }
 
+    public DetalleOrdenEntity findByProductoAndOrden(long idProducto, long idOrden) {
+        return detalleOrdenRepository.findByProductoAndOrden(idProducto, idOrden);
+    }
+
     public ResponseEntity<Object> deleteDetalleOrden(long id) {
         DetalleOrdenEntity optionalDetalleOrden = detalleOrdenRepository.findById(id);
         if (optionalDetalleOrden != null){

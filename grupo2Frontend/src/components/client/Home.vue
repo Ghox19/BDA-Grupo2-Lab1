@@ -1,47 +1,43 @@
 <script setup>
 import { ref, onMounted } from 'vue'; // Importar funciones reactivas y ciclo de vida
 import NavbarClient from './component client/Navbar.vue';
-import axios from 'axios';
+import { getProducts } from '../../Services/ProductService';
 
 // Variables reactivas
 const productos = ref([]);
 const loading = ref(false);
+const nullmessage = ref(false);
 const errorMessage = ref('');
 
 // Función para obtener los productos
-/*
-const getProductos = async () => {
+
+const getAllProducts = async () => {
   loading.value = true;
   try {
-    const response = await axios.get('http://localhost:8080/producto');
-    productos.value = response.data; // Asignar datos a la referencia reactiva
+    const response = await getProducts(); // Llamar a la función del servicio
+    productos.value = response; // Asignar datos a la referencia reactiva
   } catch (error) {
     errorMessage.value = 'Error al cargar los productos';
   } finally {
     loading.value = false;
+    if(productos.value == null && errorMessage.value == '') {
+      nullmessage.value = true;
+    }
   }
 };
 
 // Llamar a la función cuando el componente se monte
 onMounted(() => {
-  getProductos();
+  getAllProducts();
 });
-*/
+
 </script>
 
 <template>
   <div class="container-home">
     <NavbarClient />
     <div class="content-home">
-      <div v-if="loading">Cargando productos...</div>
-      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-      <div class="product-list">
-        <div v-for="product in productos" :key="product.id" class="product-card">
-          <h3>{{ product.name }}</h3>
-          <p>{{ product.description }}</p>
-          <p>Precio: {{ product.price }}</p>
-        </div>
-      </div>
+      <router-view />
     </div>
   </div>
 </template>
@@ -56,29 +52,13 @@ onMounted(() => {
 }
 
 .content-home {
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
   overflow: hidden; /* Evita el desbordamiento */
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.product-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.product-card {
-  width: 300px;
-  height: 300px;
-  margin: 16px;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
   box-sizing: border-box;
 }
 </style>

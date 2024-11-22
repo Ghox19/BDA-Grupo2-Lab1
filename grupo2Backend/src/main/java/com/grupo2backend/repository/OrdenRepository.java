@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrdenRepository {
@@ -34,6 +36,17 @@ public class OrdenRepository {
         }
     }
 
+    public Optional<Long> findByEstadoAndIdCliente(Long idCliente){
+        String sql = "SELECT id_orden FROM orden WHERE id_cliente = :idCliente AND estado = :estado";
+        try(Connection con = sql2o.open()){
+            Long idOrden = con.createQuery(sql)
+                    .addParameter("idCliente", idCliente)
+                    .addParameter("estado", "en_proceso")
+                    .executeAndFetchFirst(Long.class);
+            return Optional.ofNullable(idOrden);
+        }
+    }
+
     public OrdenEntity findById(Long id) {
         String sql = "SELECT id_orden, fecha_orden, estado, id_cliente, total FROM orden WHERE id_orden = :id";
         try (Connection con = sql2o.open()) {
@@ -49,6 +62,16 @@ public class OrdenRepository {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
+        }
+    }
+
+
+    public BigDecimal getTotalOrden(Long id) {
+        String sql = "SELECT calcular_total_orden(:id)";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeScalar(BigDecimal.class);
         }
     }
 }

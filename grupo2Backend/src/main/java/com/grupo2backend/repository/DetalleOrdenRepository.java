@@ -42,6 +42,16 @@ public class DetalleOrdenRepository {
         }
     }
 
+    public DetalleOrdenEntity findByProductoAndOrden(Long idProducto, Long idOrden) {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden WHERE id_producto = :id_producto AND id_orden = :id_orden";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id_producto", idProducto)
+                    .addParameter("id_orden", idOrden)
+                    .executeAndFetchFirst(DetalleOrdenEntity.class);
+        }
+    }
+
     public void deleteById(Long id) {
         String sql = "DELETE FROM detalle_orden WHERE id_detalle = :id";
         try (Connection con = sql2o.open()) {
