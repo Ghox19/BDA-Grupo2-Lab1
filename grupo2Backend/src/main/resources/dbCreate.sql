@@ -1,6 +1,5 @@
 -- IDEALMENTE EJECUTAR LO SIGUIENTE POR MEDIO DE PGADMIN, O EJECUTAR SOLAMENTE LO RELACIONADO AL PROCEDIMIENTO EN ADELANTE, USANDO SPRING BOOT SE CAE POR LAS $$
 
-/*
 CREATE TABLE IF NOT EXISTS categoria (
                                          id_categoria SERIAL PRIMARY KEY,
                                          nombre VARCHAR(100) NOT NULL
@@ -139,4 +138,4 @@ CREATE TRIGGER trigger_auditoria_orden
 CREATE TRIGGER trigger_auditoria_detalle_orden
     AFTER INSERT OR UPDATE OR DELETE ON detalle_orden
     FOR EACH ROW
-    EXECUTE FUNCTION auditar_operacion(); */
+    EXECUTE FUNCTION auditar_operacion();

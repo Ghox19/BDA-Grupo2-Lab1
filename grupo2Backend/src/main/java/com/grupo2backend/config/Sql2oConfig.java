@@ -9,6 +9,6 @@ public class Sql2oConfig {
 
     @Bean
     public Sql2o sql2o() {
-        return new Sql2o("jdbc:postgresql://localhost:5432/grupo2bda", "postgres", "laucesbkn2001");
+        return new Sql2o("jdbc:postgresql://localhost:5432/grupo2bda", "postgres", "admin");
     }
 }

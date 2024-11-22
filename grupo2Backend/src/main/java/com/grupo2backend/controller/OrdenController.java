@@ -3,6 +3,7 @@ package com.grupo2backend.controller;
 import com.grupo2backend.entity.OrdenEntity;
 import com.grupo2backend.services.OrdenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +39,15 @@ public class OrdenController {
     }
 
     @GetMapping("/calcularTotalOrden/{id}")
-    public ResponseEntity<Long> getTotalOrden(@PathVariable Long id){
-        Long total = service.getTotalOrden(id);
-        if (total != null) {
-            return ResponseEntity.ok(total);
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Object> getTotalOrden(@PathVariable Long id) {
+        OrdenEntity orden = service.getOrdenById(id);
+
+        if (orden == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Orden no encontrada");
         }
+
+        BigDecimal totalOrden = service.getTotalOrden(id);
+
+        return ResponseEntity.ok(totalOrden);
     }
 }

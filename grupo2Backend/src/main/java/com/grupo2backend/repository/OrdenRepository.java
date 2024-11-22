@@ -52,12 +52,13 @@ public class OrdenRepository {
         }
     }
 
-    public Long getTotalOrden(Long idOrden){
-        String sql = "SELECT calcular_total_orden(:idOrden)";
-        try(Connection con = sql2o.open()){
-            return con.createQuery(sql).
-                    addParameter("idOrden", idOrden).
-                    executeAndFetchFirst(Long.class);
+
+    public BigDecimal getTotalOrden(Long id) {
+        String sql = "SELECT calcular_total_orden(:id)";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeScalar(BigDecimal.class);
         }
     }
 }

@@ -45,7 +45,15 @@ public class OrdenService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public Long getTotalOrden(Long id){
-        return ordenRepository.getTotalOrden(id);
+    public BigDecimal getTotalOrden(Long id){
+        OrdenEntity orden = ordenRepository.findById(id);
+        BigDecimal total = ordenRepository.getTotalOrden(id);
+
+        if(orden != null) {
+            orden.setTotal(total);
+            return total;
+        } else {
+            return null;
+        }
     }
 }
