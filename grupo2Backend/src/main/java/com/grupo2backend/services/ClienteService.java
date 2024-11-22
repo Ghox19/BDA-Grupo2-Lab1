@@ -1,6 +1,5 @@
 package com.grupo2backend.services;
 
-import com.grupo2backend.entity.CategoriaEntity;
 import com.grupo2backend.entity.ClienteEntity;
 import com.grupo2backend.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

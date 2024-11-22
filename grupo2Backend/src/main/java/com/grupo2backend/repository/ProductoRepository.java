@@ -1,6 +1,5 @@
 package com.grupo2backend.repository;
 
-import com.grupo2backend.entity.CategoriaEntity;
 import com.grupo2backend.entity.ProductoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

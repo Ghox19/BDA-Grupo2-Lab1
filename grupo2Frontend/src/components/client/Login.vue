@@ -189,5 +189,4 @@ const login = async () => {
     font-weight: bold;
     margin: 0.5rem;
 }
-
 </style>
