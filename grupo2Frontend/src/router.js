@@ -3,6 +3,7 @@ import Home from './components/client/Home.vue';
 import Register from './components/client/register.vue';
 import Login from './components/client/login.vue';
 import allProducts from './components/client/component client/allProducts.vue';
+import Product from './components/client/component client/product.vue';
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/product/:id',
+    name: 'product',
+    component: Product
   }
 ];
 

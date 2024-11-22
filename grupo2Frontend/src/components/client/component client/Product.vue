@@ -1,0 +1,156 @@
+<script setup>
+import {computed, onMounted, ref} from 'vue'
+import { useRouter } from 'vue-router'
+import { getProductById} from '../../../Services/ProductService';
+import { getDetalleOrden } from "../../../Services/DetalleOrden"
+import { createDetalleOrden } from "../../../Services/DetalleOrden"
+import { updateDetalleOrden } from "../../../Services/DetalleOrden"
+import NavbarClient from '../component client/Navbar.vue';
+import {useStore} from "vuex";
+
+const router = useRouter();
+const nombre = ref('')
+const precio = ref('')
+const stock = ref('')
+const descripcion = ref('')
+const estado = ref('')
+const cantidad = ref(1)
+const store = useStore();
+const orden = computed(() => store.getters.getOrden);
+const idProducto = router.currentRoute.value.params.id;
+
+
+
+onMounted(async () => {
+    const response = await getProductById(idProducto);
+    console.log(response);
+    nombre.value = response.data.nombre;
+    precio.value = response.data.precio;
+    stock.value = response.data.stock;
+    descripcion.value = response.data.descripcion;
+    estado.value = response.data.estado;
+});
+
+const carrito = async () => {
+  console.log("Cantidad",cantidad.value);
+  const response = await getDetalleOrden(orden.value.id_orden, idProducto);
+  if (response.data != null) {
+    const aux = response.data.cantidad + cantidad.value;
+    const data1 = {
+      id_detalle: response.data.id_detalle,
+      id_orden: response.data.id_orden,
+      id_producto: 6,
+      cantidad: aux,
+      precio_unitario: response.data.precio_unitario
+    }
+    const response = await updateDetalleOrden(data1);
+    alert("Producto agregado al carrito");
+    router.push({ name: 'home' });
+
+  } else {
+    const data2 = {
+      id_orden: orden.value.id_orden,
+      id_producto: 6,
+      cantidad: cantidad.value,
+      precio_unitario: precio.value
+    }
+    const response = await createDetalleOrden(data2);
+    alert("Se aumento la cantidad de productos en el carrito");
+    router.push({ name: 'home' });
+  }
+}
+
+</script>
+
+<template>
+  <div class="fondo">
+    <NavbarClient />
+    <div class="formato">
+      <div class="contenedor1">
+        <h2 class="titulo1">{{nombre}}</h2>
+        <div class="caracteristicas">
+          <p class="caligrafia"><strong>Precio: </strong> ${{precio}}</p>
+          <p class="caligrafia"><strong>Stock:  </strong>{{stock}} unidades</p>
+          <p class="caligrafia"><strong>Estado: </strong>{{estado}}</p>
+        </div>
+        <div class="cantidad-container">
+          <button class="boton" @click="carrito">Agregar al Carrito</button>
+          <input type="number" v-model="cantidad" class="input-cantidad" :max="stock" :min="1" />
+        </div>
+      </div>
+      <div class="contenedor2">
+        <h2 class="titulo2" >Descripcion del producto</h2>
+        <p class="descripcion">{{descripcion}}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.fondo {
+  height: 100%;
+  background-color: white;
+  overflow: hidden;
+}
+
+.formato{
+  height: 100%;
+  display: flex;
+}
+
+.contenedor1 {
+  width: 40%;
+  height: 100%;
+  background: #5EA9DC52;
+}
+
+.contenedor2{
+  width: 60%;
+  height: 100%;
+  background: white;
+  border: 1px solid white;
+  color:black;
+}
+
+.caligrafia{
+  color: black;
+  text-align: justify;
+  margin-left: 190px;
+}
+
+.descripcion{
+  color: black;
+  text-align: justify;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.caracteristicas {
+}
+
+.titulo1{
+  color: black;
+  text-align: center;
+  margin-top: 150px;
+}
+
+.titulo2{
+  color: black;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.boton{
+  background: #4944b8;
+  color: white;
+}
+
+.input-cantidad {
+  width: 80px;
+  height: 30px;
+  margin-left: 10px;
+  text-align: center;
+  background: white;
+  color: #1a1a1a;
+}
+</style>
