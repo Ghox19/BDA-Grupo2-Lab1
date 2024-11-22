@@ -44,4 +44,8 @@ public class ClienteService {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    public String actualizarEstadoOrden(Integer id) {
+        return clienteRepository.actualizarEstadoOrden(id);
+    }
 }

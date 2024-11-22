@@ -21,11 +21,11 @@ public class OrdenService {
 
     public ResponseEntity<Object> addOrden(OrdenEntity orden) {
         try {
-            ordenRepository.save(orden);
-            return new ResponseEntity<>("Se ingresó correctamente la categoría", HttpStatus.CREATED);
+            Long idOrden = ordenRepository.save(orden);
+            return new ResponseEntity<>(idOrden, HttpStatus.CREATED);
         } catch (Exception e) {
             // Manejo del error
-            return new ResponseEntity<>("Error al ingresar la categoría: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al ingresar la orden: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

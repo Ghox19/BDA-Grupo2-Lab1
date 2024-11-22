@@ -3,36 +3,36 @@
 CREATE TABLE IF NOT EXISTS categoria (
                                          id_categoria SERIAL PRIMARY KEY,
                                          nombre VARCHAR(100) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS producto (
                                         id_producto SERIAL PRIMARY KEY,
                                         nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    precio DECIMAL(10, 2),
-    stock INT,
-    estado VARCHAR(50),
-    id_categoria INTEGER,
-    FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria) ON DELETE CASCADE
-    );
+                                        descripcion TEXT,
+                                        precio DECIMAL(10, 2),
+                                        stock INT,
+                                        estado VARCHAR(50),
+                                        id_categoria INTEGER,
+                                        FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS cliente (
                                        id_cliente SERIAL PRIMARY KEY,
                                        nombre VARCHAR(255) NOT NULL,
-    direccion VARCHAR(255),
-    email VARCHAR(100),
-    telefono VARCHAR(20),
-    clave VARCHAR(20)
-    );
+                                       direccion VARCHAR(255),
+                                       email VARCHAR(100),
+                                       telefono VARCHAR(20),
+                                       clave VARCHAR(20)
+);
 
 CREATE TABLE IF NOT EXISTS orden (
                                      id_orden SERIAL PRIMARY KEY,
                                      fecha_orden TIMESTAMP,
                                      estado VARCHAR(50),
-    id_cliente INTEGER,
-    total DECIMAL(10, 2),
-    FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente) ON DELETE CASCADE
-    );
+                                     id_cliente INTEGER,
+                                     total DECIMAL(10, 2),
+                                     FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS detalle_orden (
                                              id_detalle SERIAL PRIMARY KEY,
@@ -40,62 +40,119 @@ CREATE TABLE IF NOT EXISTS detalle_orden (
                                              id_producto INTEGER,
                                              cantidad INT,
                                              precio_unitario DECIMAL(10, 2),
-    FOREIGN KEY (id_orden) REFERENCES orden (id_orden) ON DELETE CASCADE,
-    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON DELETE CASCADE
-    );
+                                             FOREIGN KEY (id_orden) REFERENCES orden (id_orden) ON DELETE CASCADE,
+                                             FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS auditoria(
                                         id SERIAL PRIMARY KEY,
                                         id_objeto INTEGER,
                                         nombre_tabla VARCHAR(100),
-    operacion VARCHAR(200),
-    fecha TIMESTAMP
-    );
+                                        operacion VARCHAR(200),
+                                        fecha TIMESTAMP
+);
 
 -- DESCOMENTAR SI ES QUE SE QUIERE PROBAR MANUALMENTE
 CREATE OR REPLACE FUNCTION auditar_operacion()
     RETURNS TRIGGER AS $BODY$
 DECLARE
-id_valor INTEGER;
+    id_valor INTEGER;
 BEGIN
     IF (TG_TABLE_NAME = 'categoria') THEN
         IF (TG_OP = 'DELETE') THEN
-SELECT OLD.id_categoria INTO id_valor;
-ELSE
-SELECT NEW.id_categoria INTO id_valor;
-END IF;
+            SELECT OLD.id_categoria INTO id_valor;
+        ELSE
+            SELECT NEW.id_categoria INTO id_valor;
+        END IF;
     ELSIF (TG_TABLE_NAME = 'producto') THEN
         IF (TG_OP = 'DELETE') THEN
-SELECT OLD.id_producto INTO id_valor;
-ELSE
-SELECT NEW.id_producto INTO id_valor;
-END IF;
+            SELECT OLD.id_producto INTO id_valor;
+        ELSE
+            SELECT NEW.id_producto INTO id_valor;
+        END IF;
     ELSIF (TG_TABLE_NAME = 'cliente') THEN
         IF (TG_OP = 'DELETE') THEN
-SELECT OLD.id_cliente INTO id_valor;
-ELSE
-SELECT NEW.id_cliente INTO id_valor;
-END IF;
+            SELECT OLD.id_cliente INTO id_valor;
+        ELSE
+            SELECT NEW.id_cliente INTO id_valor;
+        END IF;
     ELSIF (TG_TABLE_NAME = 'orden') THEN
         IF (TG_OP = 'DELETE') THEN
-SELECT OLD.id_orden INTO id_valor;
-ELSE
-SELECT NEW.id_orden INTO id_valor;
-END IF;
+            SELECT OLD.id_orden INTO id_valor;
+        ELSE
+            SELECT NEW.id_orden INTO id_valor;
+        END IF;
     ELSIF (TG_TABLE_NAME = 'detalle_orden') THEN
         IF (TG_OP = 'DELETE') THEN
-SELECT OLD.id_detalle INTO id_valor;
-ELSE
-SELECT NEW.id_detalle INTO id_valor;
-END IF;
-END IF;
+            SELECT OLD.id_detalle INTO id_valor;
+        ELSE
+            SELECT NEW.id_detalle INTO id_valor;
+        END IF;
+    END IF;
 
-INSERT INTO auditoria (id_objeto, nombre_tabla, operacion, fecha)
-VALUES (id_valor, TG_TABLE_NAME, TG_OP, current_timestamp);
+    INSERT INTO auditoria (id_objeto, nombre_tabla, operacion, fecha)
+    VALUES (id_valor, TG_TABLE_NAME, TG_OP, current_timestamp);
 
-RETURN NULL;
+    RETURN NULL;
 END;
 $BODY$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION actualizar_estado_orden(idorden INTEGER)
+    RETURNS VARCHAR AS $$
+DECLARE
+    cantidadp INT;
+    stockproducto INT;
+    idproducto INT;
+    stockinsuficiente BOOLEAN := FALSE;
+    estadoorden VARCHAR;
+BEGIN
+    FOR idproducto, cantidadp IN
+        SELECT detalle.id_producto, detalle.cantidad
+        FROM detalle_orden detalle
+        WHERE detalle.id_orden = idorden
+        LOOP
+            SELECT prod.stock INTO stockproducto
+            FROM producto prod
+            WHERE prod.id_producto = idproducto;
+
+            IF stockproducto < cantidadp THEN
+                stockinsuficiente := TRUE;
+                EXIT;
+            END IF;
+        END LOOP;
+
+    IF stockinsuficiente THEN
+        UPDATE orden
+        SET estado = 'pendiente'
+        WHERE id_orden = idorden;
+        estadoorden := 'pendiente';
+    ELSE
+        FOR idproducto, cantidadp IN
+            SELECT detalle.id_producto, detalle.cantidad
+            FROM detalle_orden detalle
+            WHERE detalle.id_orden = idorden
+            LOOP
+                UPDATE producto
+                SET stock = stock - cantidadp
+                WHERE id_producto = idproducto;
+
+                -- Actualizar el estado del producto si el stock es 0
+                IF (SELECT prod.stock FROM producto prod WHERE prod.id_producto = idproducto LIMIT 1) = 0 THEN
+                    UPDATE producto
+                    SET estado = 'agotado'
+                    WHERE id_producto = idproducto;
+                END IF;
+            END LOOP;
+
+        UPDATE orden
+        SET estado = 'enviada'
+        WHERE id_orden = idorden;
+        estadoorden := 'enviada';
+    END IF;
+
+    RETURN estadoorden;
+END;
+$$ LANGUAGE plpgsql;
 /
 
 CREATE OR REPLACE FUNCTION calcular_total_orden(p_id_orden BIGINT)

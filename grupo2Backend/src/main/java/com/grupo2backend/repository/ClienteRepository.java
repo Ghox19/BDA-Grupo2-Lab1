@@ -15,7 +15,7 @@ public class ClienteRepository {
     private Sql2o sql2o;
 
     public List<ClienteEntity> findAll() {
-        String sql = "SELECT id_cliente, nombre, direccion, email, telefono FROM cliente";
+        String sql = "SELECT id_cliente, nombre, direccion, email, telefono, clave FROM cliente";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql).executeAndFetch(ClienteEntity.class);
         }
@@ -35,7 +35,7 @@ public class ClienteRepository {
     }
 
     public ClienteEntity findById(Long id) {
-        String sql = "SELECT id_cliente, nombre, direccion, email, telefono FROM cliente WHERE id_cliente = :id";
+        String sql = "SELECT id_cliente, nombre, direccion, email, telefono, clave FROM cliente WHERE id_cliente = :id";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
                     .addParameter("id", id)
@@ -58,6 +58,15 @@ public class ClienteRepository {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
+        }
+    }
+
+    public String actualizarEstadoOrden(Integer id) {
+        String sql = "SELECT actualizar_estado_orden(:id)";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeScalar(String.class);
         }
     }
 }

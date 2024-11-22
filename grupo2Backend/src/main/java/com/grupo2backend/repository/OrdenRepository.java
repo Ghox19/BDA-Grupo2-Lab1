@@ -23,15 +23,16 @@ public class OrdenRepository {
         }
     }
 
-    public void save(OrdenEntity entity) {
+    public Long save(OrdenEntity entity) {
         String sql = "INSERT INTO orden (fecha_orden, estado, id_cliente, total) VALUES (:fecha_orden, :estado, :id_cliente, :total)";
         try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
+            return (Long) con.createQuery(sql, true) // 'true' to return generated keys
                     .addParameter("fecha_orden", entity.getFecha_orden())
                     .addParameter("estado", entity.getEstado())
                     .addParameter("id_cliente", entity.getId_cliente())
                     .addParameter("total", entity.getTotal())
-                    .executeUpdate();
+                    .executeUpdate()
+                    .getKey(Long.class); // Get the generated key as Long
         }
     }
 
