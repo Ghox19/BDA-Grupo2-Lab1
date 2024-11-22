@@ -31,6 +31,12 @@ public class DetalleOrdenController {
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("findByProductoAndOrden/{idProducto}/{idOrden}")
+    public ResponseEntity<DetalleOrdenEntity> findByProductoAndOrden(@PathVariable Long idProducto, @PathVariable Long idOrden) {
+        DetalleOrdenEntity entity = service.findByProductoAndOrden(idProducto, idOrden);
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         return service.deleteDetalleOrden(id);
