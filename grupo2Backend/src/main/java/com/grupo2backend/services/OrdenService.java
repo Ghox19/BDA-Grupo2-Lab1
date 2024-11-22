@@ -22,6 +22,7 @@ public class OrdenService {
     public ResponseEntity<Object> addOrden(OrdenEntity orden) {
         try {
             Long idOrden = ordenRepository.save(orden);
+            System.out.println(idOrden);
             return new ResponseEntity<>(idOrden, HttpStatus.CREATED);
         } catch (Exception e) {
             // Manejo del error

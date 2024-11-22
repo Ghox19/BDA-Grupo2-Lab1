@@ -36,7 +36,7 @@ public class ClienteController {
         return service.deleteCliente(id);
     }
 
-    @PostMapping("/actualizarEstadoOrden/{id}")
+    @PutMapping("/actualizarEstadoOrden/{id}")
     public ResponseEntity<String> actualizarEstadoOrden(@PathVariable Integer id) {
         String resultado = service.actualizarEstadoOrden(id);
         return ResponseEntity.ok(resultado);

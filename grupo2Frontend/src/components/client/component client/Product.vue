@@ -33,10 +33,17 @@ const carrito = async () => {
   console.log("Cantidad",cantidad.value);
   const response = await getDetalleOrden(orden, idProducto);
 
+  console.log(response);
+
   //verificacion de token y redireccionamiento a login
 
-  if (response.data != null) {
+
+  if (response.data) {
+    console.log("existe");
+    console.log("response ",response.data.cantidad);
+    console.log("agregar ",cantidad.value);
     const aux = response.data.cantidad + cantidad.value;
+    console.log("aux ",aux);
     const data1 = {
       id_detalle: response.data.id_detalle,
       id_orden: orden,
@@ -44,19 +51,26 @@ const carrito = async () => {
       cantidad: aux,
       precio_unitario: response.data.precio_unitario
     }
-    const response = await updateDetalleOrden(data1);
-    alert("Producto agregado al carrito");
+
+    console.log(data1);
+    const response1 = await updateDetalleOrden(data1);
+    alert("Se aumento la cantidad de productos en el carrito");
     router.push({  name: 'allproducts' });
 
   } else {
+    console.log("No existe");
     const data2 = {
       id_orden: orden,
       id_producto: idProducto,
       cantidad: cantidad.value,
       precio_unitario: precio.value
     }
-    const response = await createDetalleOrden(data2);
-    alert("Se aumento la cantidad de productos en el carrito");
+
+    console.log(data2);
+
+    const response2 = await createDetalleOrden(data2);
+    console.log(response2);
+    alert("Producto agregado al carrito");
     router.push({ name: 'allproducts'});
   }
 }

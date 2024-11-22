@@ -44,7 +44,7 @@ public class OrdenController {
         return service.deleteOrden(id);
     }
 
-    @GetMapping("/calcularTotalOrden/{id}")
+    @PutMapping("/calcularTotalOrden/{id}")
     public ResponseEntity<Object> getTotalOrden(@PathVariable Long id) {
         OrdenEntity orden = service.getOrdenById(id);
 

@@ -1,8 +1,8 @@
 import httpClient from "../http-common";
 
-export const getDetalleOrden = async (ordenId, prouctoId) => {
+export const getDetalleOrden = async (idOrden, idProducto) => {
     try {
-        const response = await httpClient.get(`/detalleOrden/findByProductAndOrden/${prouctoId}/${ordenId}`);
+        const response = await httpClient.get(`/detalleOrden/findByProductoAndOrden/${idProducto}/${idOrden}`);
         return { data: response.data, status: response.status };
     } catch (error) {
         if (error.response) {
