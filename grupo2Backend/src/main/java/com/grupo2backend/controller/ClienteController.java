@@ -35,4 +35,11 @@ public class ClienteController {
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         return service.deleteCliente(id);
     }
+
+    @PostMapping("/actualizarEstadoOrden/{id}")
+    public ResponseEntity<String> actualizarEstadoOrden(@PathVariable Integer id) {
+        String resultado = service.actualizarEstadoOrden(id);
+        return ResponseEntity.ok(resultado);
+    }
+
 }
