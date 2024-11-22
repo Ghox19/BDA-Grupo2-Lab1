@@ -33,7 +33,7 @@ public class OrdenService {
         return ordenRepository.findAll();
     }
 
-    public Optional<Long> getOrdenProcesoByIdCliente(Long idCliente){
+    public Optional<Integer> getOrdenProcesoByIdCliente(Long idCliente){
               return ordenRepository.findByEstadoAndIdCliente(idCliente);
     }
 
