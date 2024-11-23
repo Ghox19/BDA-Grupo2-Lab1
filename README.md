@@ -2,7 +2,7 @@
 # Instrucciones detalladas para configurar y desplegar la aplicación. 
 
 ## **Para ejecutar el *back-end***:
-1. Crear una base de datos en la aplicación pgAdmin4.
+1. Crear una base de datos llamada "grupo2bda" en la aplicación pgAdmin 4.
 
 2. Modificar la URL, usuario, contraseña y nombre de la base de datos de PostgreSQL dentro de los archivos `application.properties` dentro de la carpeta “resources” y `Sql2oConfig.java` dentro de la carpeta “config”.
 
