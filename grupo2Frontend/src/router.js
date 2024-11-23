@@ -5,6 +5,9 @@ import Login from './components/client/login.vue';
 import allProducts from './components/client/component client/allProducts.vue';
 import Product from './components/client/component client/product.vue';
 import ListOrder from "./components/client/component client/ListOrder.vue";
+import Order from './components/client/component client/ViewNavbar/orderDetails.vue';
+import { auth } from './Services/authentication';
+
 
 const routes = [
   {
@@ -28,7 +31,14 @@ const routes = [
       {
         path: 'ListOrder',
         name: 'ListOrder',
-        component: ListOrder
+        component: ListOrder,
+        beforeEnter: auth
+      },
+      {
+        path: 'order/:id',
+        name: 'order',
+        component: Order,
+        beforeEnter: auth
       }
     ]
     },

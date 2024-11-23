@@ -36,29 +36,29 @@ onMounted(() => {
 
 <style scoped>
 .navbar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 9vh;
-    width: 100%;
-    background-color: #4944b8;
-    color: white;
-    font-family: "Open Sans", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 9vh;
+  width: 100%;
+  background-color: #4944b8;
+  color: white;
+  font-family: "Open Sans", sans-serif;
 }
 
 .content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 2rem;
 }
 
 .sub-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    width: 13%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 16%;
 }
 </style>

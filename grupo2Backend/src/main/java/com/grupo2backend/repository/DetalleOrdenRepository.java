@@ -33,6 +33,15 @@ public class DetalleOrdenRepository {
         }
     }
 
+    public List<DetalleOrdenEntity> findByOrdenId(long idOrden) {
+        String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden WHERE id_orden = :idOrden";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("idOrden", idOrden)
+                    .executeAndFetch(DetalleOrdenEntity.class);
+        }
+    }
+
     public DetalleOrdenEntity findById(Long id) {
         String sql = "SELECT id_detalle, id_orden, id_producto, cantidad, precio_unitario FROM detalle_orden WHERE id_detalle = :id";
         try (Connection con = sql2o.open()) {

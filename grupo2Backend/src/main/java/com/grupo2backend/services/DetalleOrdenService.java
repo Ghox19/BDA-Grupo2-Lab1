@@ -27,6 +27,10 @@ public class DetalleOrdenService {
         }
     }
 
+    public List<DetalleOrdenEntity> getDetallesByOrdenId(long idOrden) {
+        return detalleOrdenRepository.findByOrdenId(idOrden);
+    }
+
     public List<DetalleOrdenEntity> getAllDetalleOrden() {
         return detalleOrdenRepository.findAll();
     }

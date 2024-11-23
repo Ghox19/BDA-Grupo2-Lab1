@@ -1,10 +1,11 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue'
-import { useRouter } from 'vue-router'
+import {onMounted, ref} from 'vue';
+import { useRouter } from 'vue-router';
 import { getProductById} from '../../../Services/ProductService';
-import { getDetalleOrden } from "../../../Services/DetalleOrden"
-import { createDetalleOrden } from "../../../Services/DetalleOrden"
-import { updateDetalleOrden } from "../../../Services/DetalleOrden"
+import { getDetalleOrden } from "../../../Services/DetalleOrden";
+import { createDetalleOrden } from "../../../Services/DetalleOrden";
+import { updateDetalleOrden } from "../../../Services/DetalleOrden";
+import { verifyToken } from "../../../Services/authentication";
 import {useStore} from "vuex";
 
 const router = useRouter();
@@ -35,15 +36,19 @@ const carrito = async () => {
 
   console.log(response);
 
-  //verificacion de token y redireccionamiento a login
+  const response1 = await verifyToken();
+  console.log(response1);
+  if (!response1) {
+     alert("Debe iniciar sesión para agregar productos al carrito");
+     router.push({ name: 'login' });
+     return;
+   }
+
 
 
   if (response.data) {
-    console.log("existe");
-    console.log("response ",response.data.cantidad);
-    console.log("agregar ",cantidad.value);
     const aux = response.data.cantidad + cantidad.value;
-    console.log("aux ",aux);
+
     const data1 = {
       id_detalle: response.data.id_detalle,
       id_orden: orden,

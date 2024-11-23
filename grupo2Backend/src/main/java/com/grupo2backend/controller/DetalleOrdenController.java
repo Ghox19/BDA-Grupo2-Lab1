@@ -20,6 +20,12 @@ public class DetalleOrdenController {
         return service.getAllDetalleOrden();
     }
 
+    @GetMapping("/orden/{id}")
+    public ResponseEntity<List<DetalleOrdenEntity>> getDetallesByOrdenId(@PathVariable Long id) {
+        List<DetalleOrdenEntity> detalles = service.getDetallesByOrdenId(id);
+        return detalles != null ? ResponseEntity.ok(detalles) : ResponseEntity.ok().body(null);
+    }
+
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody DetalleOrdenEntity entity) {
         return service.addDetalleOrden(entity);
