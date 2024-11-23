@@ -13,6 +13,7 @@
 import { logout } from '../../../../Services/UserService';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
+import router from "../../../../router.js";
 
 const store = useStore();
 const route = useRoute();
@@ -33,7 +34,7 @@ const logoutUser = async () => {
 }
 
 const ViewCart = () => {
-    console.log('Ver carrito');
+    router.push({ name: 'ListOrder' });
 }
 
 

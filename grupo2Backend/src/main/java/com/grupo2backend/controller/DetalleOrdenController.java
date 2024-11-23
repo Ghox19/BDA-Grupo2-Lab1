@@ -25,9 +25,9 @@ public class DetalleOrdenController {
         return service.addDetalleOrden(entity);
     }
 
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody DetalleOrdenEntity entity) {
-        return ResponseEntity.ok(service.addDetalleOrden(entity));
+    @PutMapping()
+    public ResponseEntity<DetalleOrdenEntity> update(@RequestBody DetalleOrdenEntity entity) {
+        return service.updateDetalleOrden(entity) != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")

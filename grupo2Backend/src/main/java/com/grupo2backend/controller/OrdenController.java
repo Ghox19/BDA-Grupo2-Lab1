@@ -28,6 +28,11 @@ public class OrdenController {
         return service.addOrden(entity);
     }
 
+    @GetMapping("/cliente/{idCliente}")
+    public List<OrdenEntity> getOrdenesByClienteId(@PathVariable Long idCliente) {
+        return service.getOrdenesByClienteId(idCliente);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<OrdenEntity> getById(@PathVariable Long id) {
         OrdenEntity entity = service.getOrdenById(id);

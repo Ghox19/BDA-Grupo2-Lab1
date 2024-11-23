@@ -23,6 +23,16 @@ public class OrdenRepository {
         }
     }
 
+    public List<OrdenEntity> findByClienteId(Long idCliente) {
+        String sql = "SELECT * FROM orden WHERE id_cliente = :idCliente";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("idCliente", idCliente)
+                    .executeAndFetch(OrdenEntity.class);
+        }
+    }
+
+
     public Long save(OrdenEntity entity) {
         String sql = "INSERT INTO orden (fecha_orden, estado, id_cliente, total) VALUES (:fecha_orden, :estado, :id_cliente, :total)";
         try (Connection con = sql2o.open()) {

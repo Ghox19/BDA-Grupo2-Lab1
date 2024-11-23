@@ -52,7 +52,7 @@ const carrito = async () => {
       precio_unitario: response.data.precio_unitario
     }
 
-    console.log(data1);
+    console.log("data1", data1);
     const response1 = await updateDetalleOrden(data1);
     alert("Se aumento la cantidad de productos en el carrito");
     router.push({  name: 'allproducts' });
