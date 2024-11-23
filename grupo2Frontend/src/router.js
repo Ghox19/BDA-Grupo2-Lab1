@@ -4,6 +4,7 @@ import Register from './components/client/register.vue';
 import Login from './components/client/login.vue';
 import allProducts from './components/client/component client/allProducts.vue';
 import Product from './components/client/component client/product.vue';
+import ListOrder from "./components/client/component client/ListOrder.vue";
 
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
         path: 'product/:id',
         name: 'product',
         component: Product
+      },
+      {
+        path: 'ListOrder',
+        name: 'ListOrder',
+        component: ListOrder
       }
     ]
     },

@@ -39,6 +39,17 @@ public class DetalleOrdenService {
         return detalleOrdenRepository.findByProductoAndOrden(idProducto, idOrden);
     }
 
+    public DetalleOrdenEntity updateDetalleOrden(DetalleOrdenEntity detalleOrden) {
+        DetalleOrdenEntity optionalDetalleOrden = detalleOrdenRepository.findById(detalleOrden.getId_detalle());
+        System.out.println(detalleOrden.getId_detalle());
+        if (optionalDetalleOrden != null){
+            this.detalleOrdenRepository.deleteById(detalleOrden.getId_detalle());
+            this.detalleOrdenRepository.save(detalleOrden);
+            return detalleOrden;
+        }
+        return null;
+    }
+
     public ResponseEntity<Object> deleteDetalleOrden(long id) {
         DetalleOrdenEntity optionalDetalleOrden = detalleOrdenRepository.findById(id);
         if (optionalDetalleOrden != null){

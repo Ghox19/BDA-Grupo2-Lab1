@@ -34,6 +34,10 @@ public class OrdenController {
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/cliente/{idCliente}")
+    public List<OrdenEntity> getOrdenesByClienteId(@PathVariable Long idCliente) {
+        return service.getOrdenesByClienteId(idCliente);
+    }
     @GetMapping("/ordencliente/{id_cliente}")
     public Optional<Integer> getOrdenById(@PathVariable Long id_cliente){
         return service.getOrdenProcesoByIdCliente(id_cliente);

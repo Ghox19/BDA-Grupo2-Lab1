@@ -19,3 +19,13 @@ export const CreateOrder = async (order) => {
         throw error;
     }
 }
+
+export const getOrderByIdUser = async (idUser) => {
+    try {
+        const response = await httpClient.get(`/orden/cliente/${idUser}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error en la respuesta del servidor:", error.response.data);
+        throw error;
+    }
+}
