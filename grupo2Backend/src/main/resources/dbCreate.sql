@@ -49,36 +49,47 @@ CREATE TABLE IF NOT EXISTS auditoria(
                                         id_objeto INTEGER,
                                         nombre_tabla VARCHAR(100),
                                         operacion VARCHAR(200),
+                                        id_cliente INTEGER,
                                         fecha TIMESTAMP
 );
 
--- DESCOMENTAR SI ES QUE SE QUIERE PROBAR MANUALMENTE
+
 CREATE OR REPLACE FUNCTION auditar_operacion()
     RETURNS TRIGGER AS $BODY$
 DECLARE
     id_valor INTEGER;
+    id_cliente INTEGER;
 BEGIN
     -- Tomando en cuenta que los usuarios se van a ir añadiendo conforme se registren en el sistema, y que los productos
     -- y categoría de estos no los maneja el usuario directamente en el front
     IF (TG_TABLE_NAME = 'orden') THEN
         IF (TG_OP = 'DELETE') THEN
             SELECT OLD.id_orden INTO id_valor;
+            SELECT OLD.id_cliente INTO id_cliente;
         ELSE
             SELECT NEW.id_orden INTO id_valor;
+            SELECT NEW.id_cliente INTO id_cliente;
         END IF;
     ELSIF (TG_TABLE_NAME = 'detalle_orden') THEN
         IF (TG_OP = 'DELETE') THEN
             SELECT OLD.id_detalle INTO id_valor;
+            -- Un detalle orden contiene un id_orden, por lo que se puede obtener el id_cliente
+            SELECT o.id_cliente INTO id_cliente
+            FROM orden o
+            WHERE OLD.id_orden = o.id_orden;
         ELSE
             SELECT NEW.id_detalle INTO id_valor;
+            SELECT o.id_cliente INTO id_cliente
+            FROM orden o
+            WHERE NEW.id_orden = o.id_orden;
         END IF;
     END IF;
 
-    INSERT INTO auditoria (id_objeto, nombre_tabla, operacion, fecha)
-    VALUES (id_valor, TG_TABLE_NAME, TG_OP, current_timestamp);
+    INSERT INTO auditoria (id_objeto, nombre_tabla, operacion, id_cliente, fecha)
+    VALUES (id_valor, TG_TABLE_NAME, TG_OP, id_cliente, current_timestamp);
 
     RETURN NULL;
-END;
+END
 $BODY$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION actualizar_estado_orden(idorden INTEGER)
