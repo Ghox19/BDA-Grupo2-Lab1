@@ -19,9 +19,14 @@ public class OrdenService {
     @Autowired
     public OrdenService(OrdenRepository ordenRepository){this.ordenRepository = ordenRepository;};
 
+    public List<OrdenEntity> getOrdenesByClienteId(Long idCliente) {
+        return ordenRepository.findByClienteId(idCliente);
+    }
+
     public ResponseEntity<Object> addOrden(OrdenEntity orden) {
         try {
             Long idOrden = ordenRepository.save(orden);
+            System.out.println(idOrden);
             return new ResponseEntity<>(idOrden, HttpStatus.CREATED);
         } catch (Exception e) {
             // Manejo del error

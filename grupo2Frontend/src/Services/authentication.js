@@ -11,11 +11,11 @@ export const auth = async (to, from, next) => {
       next();
     } else {
       console.log("No autenticado");
-      next("/");
+      next({name: "login"});
     }
   } catch (error) {
     console.log("Error de autenticación:", error);
-    next("/");
+    next({name: "login"});
   }
 };
 
