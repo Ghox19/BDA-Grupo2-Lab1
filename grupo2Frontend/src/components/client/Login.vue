@@ -32,7 +32,6 @@ const router = useRouter();
 const data = ref({ email: '', clave: '' });
 
 const login = async () => {
-
     const response = await Login(data.value);
     console.log('Response:', response);
     if (response.status === 200) {

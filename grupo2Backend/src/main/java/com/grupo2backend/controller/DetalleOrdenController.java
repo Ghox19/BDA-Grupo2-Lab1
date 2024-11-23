@@ -20,9 +20,20 @@ public class DetalleOrdenController {
         return service.getAllDetalleOrden();
     }
 
+    @GetMapping("/orden/{id}")
+    public ResponseEntity<List<DetalleOrdenEntity>> getDetallesByOrdenId(@PathVariable Long id) {
+        List<DetalleOrdenEntity> detalles = service.getDetallesByOrdenId(id);
+        return detalles != null ? ResponseEntity.ok(detalles) : ResponseEntity.ok().body(null);
+    }
+
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody DetalleOrdenEntity entity) {
         return service.addDetalleOrden(entity);
+    }
+
+    @PutMapping()
+    public ResponseEntity<DetalleOrdenEntity> update(@RequestBody DetalleOrdenEntity entity) {
+        return service.updateDetalleOrden(entity) != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")
@@ -31,10 +42,10 @@ public class DetalleOrdenController {
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("findByProductoAndOrden/{idProducto}/{idOrden}")
+    @GetMapping("/findByProductoAndOrden/{idProducto}/{idOrden}")
     public ResponseEntity<DetalleOrdenEntity> findByProductoAndOrden(@PathVariable Long idProducto, @PathVariable Long idOrden) {
         DetalleOrdenEntity entity = service.findByProductoAndOrden(idProducto, idOrden);
-        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.ok().body(null);
     }
 
     @DeleteMapping("/{id}")

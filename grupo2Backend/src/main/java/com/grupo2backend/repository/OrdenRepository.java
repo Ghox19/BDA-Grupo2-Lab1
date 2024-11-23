@@ -36,6 +36,15 @@ public class OrdenRepository {
         }
     }
 
+    public List<OrdenEntity> findByClienteId(Long idCliente) {
+        String sql = "SELECT * FROM orden WHERE id_cliente = :idCliente";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("idCliente", idCliente)
+                    .executeAndFetch(OrdenEntity.class);
+        }
+    }
+
     public Optional<Integer> findByEstadoAndIdCliente(Long idCliente){
         String sql = "SELECT id_orden FROM orden WHERE id_cliente = :idCliente AND estado = :estado";
         try(Connection con = sql2o.open()){

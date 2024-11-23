@@ -58,7 +58,7 @@ onMounted(() => {
   align-items: center;
   height: 100%;
   width: 100%;
-  overflow: hidden; /* Evita el desbordamiento */
+  overflow: hidden;
   box-sizing: border-box;
 }
 </style>
