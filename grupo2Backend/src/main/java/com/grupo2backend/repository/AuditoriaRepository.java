@@ -22,13 +22,6 @@ public class AuditoriaRepository {
         }
     }
 
-    public List<AuditoriaEntity> findAll() {
-        String sql = "SELECT id, id_cliente, id_objeto,nombreTabla, operacion, fecha FROM auditoria";
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetch(AuditoriaEntity.class);
-        }
-    }
-
     public List<AuditoriaEntity> findByUserId(Long id) {
         String sql = "SELECT id, id_cliente, id_objeto, nombre_tabla, operacion, fecha " +
                 "FROM auditoria " +
