@@ -20,10 +20,10 @@ public class DetalleOrdenService {
     public ResponseEntity<Object> addDetalleOrden(DetalleOrdenEntity detalleOrden) {
         try {
             detalleOrdenRepository.save(detalleOrden);
-            return new ResponseEntity<>("Se ingresó correctamente la categoría", HttpStatus.CREATED);
+            return new ResponseEntity<>("Se ingresó correctamente el detalle de la orden", HttpStatus.CREATED);
         } catch (Exception e) {
             // Manejo del error
-            return new ResponseEntity<>("Error al ingresar la categoría: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al ingresar el detalle de la orden: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -58,7 +58,7 @@ public class DetalleOrdenService {
         DetalleOrdenEntity optionalDetalleOrden = detalleOrdenRepository.findById(id);
         if (optionalDetalleOrden != null){
             this.detalleOrdenRepository.deleteById(id);
-            return new ResponseEntity<>("Se elimino correctamente la Categoria", HttpStatus.CREATED);
+            return new ResponseEntity<>("Se elimino correctamente el detalle de la orden", HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

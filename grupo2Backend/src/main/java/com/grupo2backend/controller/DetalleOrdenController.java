@@ -42,6 +42,16 @@ public class DetalleOrdenController {
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
+    @PutMapping()
+    public ResponseEntity<DetalleOrdenEntity> update(@RequestBody DetalleOrdenEntity entity) {
+        return service.updateDetalleOrden(entity) != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
+    @PutMapping()
+    public ResponseEntity<DetalleOrdenEntity> update(@RequestBody DetalleOrdenEntity entity) {
+        return service.updateDetalleOrden(entity) != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/findByProductoAndOrden/{idProducto}/{idOrden}")
     public ResponseEntity<DetalleOrdenEntity> findByProductoAndOrden(@PathVariable Long idProducto, @PathVariable Long idOrden) {
         DetalleOrdenEntity entity = service.findByProductoAndOrden(idProducto, idOrden);
