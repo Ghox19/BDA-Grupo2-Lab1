@@ -12,7 +12,7 @@ import { auth } from './Services/authentication';
 
 const routes = [
   {
-    path: '/', redirect: { name: 'allproducts' }
+    path: '/', redirect: { name: 'allproducts', params: { id: 1 } }
   },
   {
     path: '/home',
@@ -20,7 +20,7 @@ const routes = [
     component: Home,
     children: [
       {
-        path: 'allproducts',
+        path: 'allproducts/:id',
         name: 'allproducts',
         component: allProducts
       },

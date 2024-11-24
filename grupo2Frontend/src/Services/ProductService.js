@@ -1,8 +1,8 @@
 import httpClient from "../http-common";
 
-export const getProducts = async () => {
+export const getProducts = async (id) => {
     try {
-        const response = await httpClient.get("/public/prod");
+        const response = await httpClient.get(`/public/prod?page=${id}`);
         return response.data;
     } catch (error) {
         console.error("Error en la respuesta del servidor:", error.response.data);
