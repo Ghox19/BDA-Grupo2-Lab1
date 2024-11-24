@@ -14,10 +14,17 @@ public class ProductoRepository {
     @Autowired
     private Sql2o sql2o;
 
-    public List<ProductoEntity> findAll() {
-        String sql = "SELECT id_producto, nombre, descripcion, precio, stock, estado, id_categoria FROM producto";
+    public List<ProductoEntity> findAll(int page, int size) {
+        String sql = "SELECT id_producto, nombre, descripcion, precio, stock, estado, id_categoria " +
+                "FROM producto " +
+                "ORDER BY id_producto " +
+                "LIMIT :limit OFFSET :offset";
+
         try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetch(ProductoEntity.class);
+            return con.createQuery(sql)
+                    .addParameter("limit", size)
+                    .addParameter("offset", (page - 1) * size)
+                    .executeAndFetch(ProductoEntity.class);
         }
     }
 
@@ -50,6 +57,14 @@ public class ProductoRepository {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
+        }
+    }
+
+    public long countAll() {
+        String sql = "SELECT COUNT(*) FROM producto";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeScalar(Long.class);
         }
     }
 }

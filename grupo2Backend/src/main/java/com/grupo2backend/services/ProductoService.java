@@ -27,13 +27,15 @@ public class ProductoService {
         }
     }
 
-    public List<ProductoEntity> getAllProductos() {
-        return productoRepository.findAll();
+    public List<ProductoEntity> getAllProductos(Integer page, Integer size) {
+        return productoRepository.findAll(page, size);
     }
 
     public ProductoEntity getProductoById(long id) {
         return productoRepository.findById(id);
     }
+
+    public Long getCount(){return productoRepository.countAll();};
 
     public ResponseEntity<Object> deleteProducto(long id) {
         ProductoEntity optionalProducto = productoRepository.findById(id);
