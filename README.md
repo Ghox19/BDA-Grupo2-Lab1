@@ -6,6 +6,15 @@
 
 2. Modificar la URL, usuario, contraseña y nombre de la base de datos de PostgreSQL dentro de los archivos `application.properties` dentro de la carpeta “resources” y `Sql2oConfig.java` dentro de la carpeta “config”.
 
+Ejemplo de modificación en `Sql2oConfig.java`:
+
+```
+    @Bean
+    public Sql2o sql2o() {
+        return new Sql2o("jdbc:postgresql://localhost:5433/grupo2bda", "postgres", "1234");
+    }
+```
+
 Observación:
 En la URL, se debe cambiar el puerto a la base de datos creada en pgAdmin4.
 El nombre de la base de datos creada en pgAdmin4 y en application.properties deben ser iguales.
