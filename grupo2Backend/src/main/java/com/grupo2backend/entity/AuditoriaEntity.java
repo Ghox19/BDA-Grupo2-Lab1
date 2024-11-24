@@ -8,15 +8,12 @@ import java.sql.Timestamp;
 
 
 public class AuditoriaEntity {
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
-    private Long idUsuario;
-    private String nombreTabla;
+    private Long id_cliente;
+    private Long id_objeto;
+    private String nombre_tabla;
     private String operacion;
     private Timestamp fecha;
-
 
     public Long getId() {
         return id;
@@ -26,20 +23,28 @@ public class AuditoriaEntity {
         this.id = id;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Long getId_cliente() {
+        return id_cliente;
     }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId_cliente(Long id_cliente) {
+        this.id_cliente = id_cliente;
     }
 
-    public String getNombreTabla() {
-        return nombreTabla;
+    public Long getId_objeto() {
+        return id_objeto;
     }
 
-    public void setNombreTabla(String nombreTabla) {
-        this.nombreTabla = nombreTabla;
+    public void setId_objeto(Long id_objeto) {
+        this.id_objeto = id_objeto;
+    }
+
+    public String getNombre_tabla() {
+        return nombre_tabla;
+    }
+
+    public void setNombre_tabla(String nombre_tabla) {
+        this.nombre_tabla = nombre_tabla;
     }
 
     public String getOperacion() {

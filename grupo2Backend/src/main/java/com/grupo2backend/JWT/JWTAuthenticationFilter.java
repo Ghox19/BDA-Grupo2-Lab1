@@ -19,7 +19,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String path = request.getRequestURI();
 
-        if (path.startsWith("/Auth") || path.startsWith("/public")){
+        if (path.startsWith("/Auth") || path.startsWith("/public") || path.startsWith("/auditoria")){
             chain.doFilter(request,response);
             return;
         }

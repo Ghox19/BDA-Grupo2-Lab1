@@ -169,6 +169,37 @@ END;
 $BODY$ LANGUAGE plpgsql;
 /
 
+CREATE OR REPLACE FUNCTION get_user_most_operations()
+RETURNS TABLE (
+    id_usuario INTEGER,
+    tipo_operacion VARCHAR(200),
+    total_operaciones BIGINT
+) AS $BODY$
+BEGIN
+RETURN QUERY
+    WITH ranked_operations AS (
+        SELECT
+            id_cliente,
+            operacion,
+            COUNT(*) as cantidad,
+            RANK() OVER (PARTITION BY operacion ORDER BY COUNT(*) DESC) as rank
+        FROM auditoria
+        WHERE operacion IN ('INSERT', 'DELETE', 'UPDATE')
+        GROUP BY id_cliente, operacion
+    )
+SELECT
+    id_cliente,
+    operacion,
+    cantidad
+FROM ranked_operations
+WHERE rank = 1;
+
+RETURN;
+END;
+$BODY$
+LANGUAGE plpgsql;
+/
+
 DROP TRIGGER IF EXISTS trigger_auditoria_orden ON orden;
 CREATE TRIGGER trigger_auditoria_orden
     AFTER INSERT OR UPDATE OR DELETE ON orden
