@@ -51,7 +51,7 @@ const carrito = async () => {
 
     const data1 = {
       id_detalle: response.data.id_detalle,
-      id_orden: orden,
+      id_orden: orden.id_orden,
       id_producto: idProducto,
       cantidad: aux,
       precio_unitario: response.data.precio_unitario
@@ -76,7 +76,7 @@ const carrito = async () => {
     const response2 = await createDetalleOrden(data2);
     console.log(response2);
     alert("Producto agregado al carrito");
-    router.push({ name: 'allproducts'});
+    router.push({ name: 'allproducts', params: { id: 1 }});
   }
 }
 

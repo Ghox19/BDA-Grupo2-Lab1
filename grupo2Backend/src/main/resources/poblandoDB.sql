@@ -23,9 +23,9 @@ INSERT INTO cliente (nombre, direccion, email, telefono, clave) VALUES
                                                                     ('Maria Gomez', 'Avenida Siempre Viva 456', 'maria.gomez@example.com', '987654321', 'clave456');
 
 INSERT INTO orden (fecha_orden, estado, id_cliente, total) VALUES
-                                                               (current_timestamp, 'pendiente', 1, 1220.00),
+                                                               (current_timestamp, 'en_proceso', 1, 1220.00),
                                                                (current_timestamp, 'enviado', 2, 320.00),
-                                                               (current_timestamp, 'pendiente', 3, 45.00),
+                                                               (current_timestamp, 'en_proceso', 3, 45.00),
                                                                (current_timestamp, 'enviado', 4, 40.00);
 
 INSERT INTO detalle_orden (id_orden, id_producto, cantidad, precio_unitario) VALUES
