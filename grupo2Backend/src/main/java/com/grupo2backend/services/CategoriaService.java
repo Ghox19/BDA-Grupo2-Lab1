@@ -45,4 +45,12 @@ public class CategoriaService {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    public void updateCategoria(Long id_categoria, String nombre) {
+        try {
+            categoriaRepository.updateCategoria(id_categoria, nombre);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating categoria: " + e.getMessage());
+        }
+    }
 }

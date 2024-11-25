@@ -83,4 +83,20 @@ public class OrdenRepository {
                     .executeScalar(BigDecimal.class);
         }
     }
+
+    public void updateOrden(Long id, OrdenEntity orden) {
+        final String updateQuery =
+                "UPDATE orden SET fecha_orden = :fecha_orden, estado = :estado, id_cliente = :id_cliente, total = :total WHERE id_orden = :id";
+
+        try (Connection con = sql2o.beginTransaction()) {
+            con.createQuery(updateQuery)
+                    .addParameter("id", id)
+                    .addParameter("fecha_orden", orden.getFecha_orden())
+                    .addParameter("estado", orden.getEstado())
+                    .addParameter("id_cliente", orden.getId_cliente())
+                    .addParameter("total", orden.getTotal())
+                    .executeUpdate();
+            con.commit();
+        }
+    }
 }

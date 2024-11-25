@@ -48,4 +48,12 @@ public class ClienteService {
     public String actualizarEstadoOrden(Integer id) {
         return clienteRepository.actualizarEstadoOrden(id);
     }
+
+    public void updateCliente(Long id, ClienteEntity cliente) {
+        try {
+            clienteRepository.updateCliente(id, cliente);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating cliente: " + e.getMessage());
+        }
+    }
 }

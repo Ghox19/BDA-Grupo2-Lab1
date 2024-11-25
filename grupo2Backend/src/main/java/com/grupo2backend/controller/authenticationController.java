@@ -3,10 +3,8 @@ package com.grupo2backend.controller;
 import com.grupo2backend.dto.login;
 import com.grupo2backend.dto.loginResponse;
 import com.grupo2backend.entity.ClienteEntity;
-import com.grupo2backend.entity.ProductoEntity;
 import com.grupo2backend.services.AuthenticationService;
 import com.grupo2backend.services.ClienteService;
-import com.grupo2backend.services.ProductoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

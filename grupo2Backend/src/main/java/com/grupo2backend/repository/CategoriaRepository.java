@@ -47,4 +47,17 @@ public class CategoriaRepository {
                     .executeUpdate();
         }
     }
+
+    public void updateCategoria(Long id_categoria, String nombre) {
+        final String updateQuery =
+                "UPDATE categoria SET nombre = :nombre WHERE id_categoria = :id_categoria";
+
+        try (Connection con = sql2o.beginTransaction()) {
+            con.createQuery(updateQuery)
+                    .addParameter("id_categoria", id_categoria)
+                    .addParameter("nombre", nombre)
+                    .executeUpdate();
+            con.commit();
+        }
+    }
 }
