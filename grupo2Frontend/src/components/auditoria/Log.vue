@@ -57,6 +57,7 @@ onMounted(() => {
   background-color: white;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .content-home {
@@ -68,6 +69,7 @@ onMounted(() => {
   overflow: hidden; /* Evita el desbordamiento */
   padding: 16px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .title {

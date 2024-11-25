@@ -59,7 +59,7 @@ const login = async () => {
         store.commit('setOrder', orderId);
 
         alert('Sesión iniciada correctamente');
-        router.push({ name: 'allproducts' , query: { id: 1 }});
+        router.push({ name: 'allproducts' , params: { id: 1 }});
     } else {
         alert('Error al iniciar sesión');
     }
