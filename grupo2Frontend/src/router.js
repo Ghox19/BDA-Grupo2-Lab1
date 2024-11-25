@@ -7,6 +7,7 @@ import Product from './components/client/component client/product.vue';
 import ListOrder from "./components/client/component client/ListOrder.vue";
 import Order from './components/client/component client/ViewNavbar/orderDetails.vue';
 import Log from './components/auditoria/Log.vue';
+import Ranked from './components/ranked/Ranked.vue';
 import { auth } from './Services/authentication';
 
 
@@ -57,6 +58,11 @@ const routes = [
     path: '/log',
     name: 'log',
     component: Log
+  },
+  {
+    path: '/ranked',
+    name: 'ranked',
+    component: Ranked
   }
 ];
 

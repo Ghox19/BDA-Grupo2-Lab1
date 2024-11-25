@@ -55,10 +55,11 @@ const login = async () => {
             orderId = newOrden;
         }
         
+        console.log('Orden:', orderId);
         store.commit('setOrder', orderId);
 
         alert('Sesión iniciada correctamente');
-        router.push({ name: 'allproducts' });
+        router.push({ name: 'allproducts' , query: { id: 1 }});
     } else {
         alert('Error al iniciar sesión');
     }
