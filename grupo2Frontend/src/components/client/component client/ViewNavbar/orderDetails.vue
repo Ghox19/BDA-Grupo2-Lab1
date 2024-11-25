@@ -36,6 +36,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const idOrder = router.currentRoute.value.params.id;
 const store = useStore();
+const User = store.getters.getUser;
 const Order = ref({});
 const ListDetailsOrder = ref([]);
 const total = ref(0);
@@ -70,11 +71,12 @@ onMounted(() => {
 });
 
 const handlepayOrder = async () => {
+    console.log(User);
     const response = await PayOrder(idOrder);
     if(response){
         const responseOrden = await CreateOrder({
             fecha_orden: new Date(),
-            id_cliente: Order.value.id_cliente,
+            id_cliente: User.id_user,
             estado: "en_proceso",
             total: 0
         });

@@ -51,7 +51,7 @@ const carrito = async () => {
 
     const data1 = {
       id_detalle: response.data.id_detalle,
-      id_orden: orden.id_orden,
+      id_orden: orden,
       id_producto: idProducto,
       cantidad: aux,
       precio_unitario: response.data.precio_unitario
@@ -60,7 +60,7 @@ const carrito = async () => {
     console.log(data1);
     const response1 = await updateDetalleOrden(data1);
     alert("Se aumento la cantidad de productos en el carrito");
-    router.push({  name: 'allproducts' });
+    router.push({  name: 'allproducts', params: { id: 1 }});
 
   } else {
     console.log("No existe");
