@@ -69,4 +69,21 @@ public class ClienteRepository {
                     .executeScalar(String.class);
         }
     }
+
+    public void updateCliente(Long id, ClienteEntity cliente) {
+        final String updateQuery =
+                "UPDATE cliente SET nombre = :nombre, direccion = :direccion, email = :email, telefono = :telefono, clave = :clave WHERE id_cliente = :id_cliente";
+
+        try (Connection con = sql2o.beginTransaction()) {
+            con.createQuery(updateQuery)
+                    .addParameter("id_cliente", id)
+                    .addParameter("nombre", cliente.getNombre())
+                    .addParameter("direccion", cliente.getDireccion())
+                    .addParameter("email", cliente.getEmail())
+                    .addParameter("telefono", cliente.getTelefono())
+                    .addParameter("clave", cliente.getClave())
+                    .executeUpdate();
+            con.commit();
+        }
+    }
 }

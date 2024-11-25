@@ -2,6 +2,7 @@ package com.grupo2backend.controller;
 
 
 import com.grupo2backend.dto.ProductoDTO;
+import com.grupo2backend.dto.RankedDTO;
 import com.grupo2backend.entity.ClienteEntity;
 import com.grupo2backend.entity.ProductoEntity;
 import com.grupo2backend.services.ClienteService;
@@ -42,5 +43,10 @@ public class publicController {
     public ResponseEntity<ClienteEntity> getByIdClient(@PathVariable Long id) {
         ClienteEntity entity = clienteService.getClienteById(id);
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/prod/top")
+    public List<RankedDTO> getTopProduct(){
+        return service.getTopProduct();
     }
 }

@@ -60,4 +60,17 @@ public class OrdenController {
 
         return ResponseEntity.ok(totalOrden);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateOrden(
+            @PathVariable("id") Long id,
+            @RequestBody OrdenEntity orden) {
+        try {
+            service.updateOrden(id, orden);
+            return ResponseEntity.ok("Orden updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating orden: " + e.getMessage());
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.grupo2backend.controller;
 import com.grupo2backend.entity.CategoriaEntity;
 import com.grupo2backend.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,18 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         return service.deleteCategoria(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateCategoria(
+            @PathVariable("id") Long id_categoria,
+            @RequestBody CategoriaEntity categoria) {
+        try {
+            service.updateCategoria(id_categoria, categoria.getNombre());
+            return ResponseEntity.ok("Categoria updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating categoria: " + e.getMessage());
+        }
     }
 }

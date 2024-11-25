@@ -1,5 +1,6 @@
 package com.grupo2backend.services;
 
+import com.grupo2backend.dto.RankedDTO;
 import com.grupo2backend.entity.ProductoEntity;
 import com.grupo2backend.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,20 @@ public class ProductoService {
         ProductoEntity optionalProducto = productoRepository.findById(id);
         if (optionalProducto != null){
             this.productoRepository.deleteById(id);
-            return new ResponseEntity<>("Se elimino correctamente la Categoria", HttpStatus.CREATED);
+            return new ResponseEntity<>("Se elimino correctamente el producto", HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public List<RankedDTO> getTopProduct(){
+        return this.productoRepository.obtenerDetalleVentasPorCategoria();
+    }
+
+    public void updateProducto(Long id, ProductoEntity producto) {
+        try {
+            productoRepository.updateProducto(id, producto);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating cliente: " + e.getMessage());
+        }
     }
 }

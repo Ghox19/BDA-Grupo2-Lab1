@@ -66,4 +66,12 @@ public class OrdenService {
             return null;
         }
     }
+
+    public void updateOrden(Long id, OrdenEntity orden) {
+        try {
+            ordenRepository.updateOrden(id, orden);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating cliente: " + e.getMessage());
+        }
+    }
 }
